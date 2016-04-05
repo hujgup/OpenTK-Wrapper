@@ -1,0 +1,26 @@
+﻿<Properties StartupItem="Graphics\Graphics.csproj">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Graphics\subShapes\subComplexShapes\classSolidRectangle.cs">
+    <Files>
+      <File FileName="Graphics\MyClass.cs" Line="220" Column="9" />
+      <File FileName="Graphics\subShapes\classLine.cs" Line="17" Column="1" />
+      <File FileName="Graphics\subShapes\classLineLoop.cs" Line="25" Column="1" />
+      <File FileName="Graphics\subShapes\classLineStrip.cs" Line="25" Column="1" />
+      <File FileName="Graphics\subShapes\classPoint.cs" Line="16" Column="1" />
+      <File FileName="Graphics\subShapes\classPointSet.cs" Line="41" Column="1" />
+      <File FileName="Graphics\subShapes\classPolygon.cs" Line="27" Column="1" />
+      <File FileName="Graphics\subShapes\classPrimitiveShape.cs" Line="8" Column="68" />
+      <File FileName="Graphics\subShapes\classQuadrilateral.cs" Line="68" Column="1" />
+      <File FileName="Graphics\classRenderingContext2D.cs" Line="236" Column="1" />
+      <File FileName="Graphics\iDrawable.cs" Line="5" Column="41" />
+      <File FileName="Graphics\subShapes\iPrimitiveShape.cs" Line="5" Column="34" />
+      <File FileName="Graphics\subShapes\subComplexShapes\iRectangle.cs" Line="1" Column="1" />
+      <File FileName="Graphics\subShapes\subComplexShapes\classHollowRectangle.cs" Line="6" Column="71" />
+      <File FileName="Graphics\subShapes\subComplexShapes\classSolidRectangle.cs" Line="6" Column="71" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
