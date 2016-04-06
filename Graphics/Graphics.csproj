@@ -37,26 +37,38 @@
   <ItemGroup>
     <Compile Include="MyClass.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="subShapes\iPrimitiveShape.cs" />
-    <Compile Include="subShapes\classLine.cs" />
-    <Compile Include="subShapes\classLineLoop.cs" />
-    <Compile Include="subShapes\classLineStrip.cs" />
-    <Compile Include="subShapes\classPoint.cs" />
-    <Compile Include="subShapes\classPointSet.cs" />
-    <Compile Include="subShapes\classPrimitiveShape.cs" />
-    <Compile Include="subShapes\classPolygon.cs" />
-    <Compile Include="subShapes\classQuadrilateral.cs" />
-    <Compile Include="subShapes\classTriangle.cs" />
-    <Compile Include="subShapes\classTriangleFan.cs" />
     <Compile Include="classRenderingContext2D.cs" />
-    <Compile Include="subShapes\subComplexShapes\iRectangle.cs" />
-    <Compile Include="subShapes\subComplexShapes\classHollowRectangle.cs" />
-    <Compile Include="subShapes\subComplexShapes\classSolidRectangle.cs" />
     <Compile Include="iDrawable.cs" />
+    <Compile Include="subGeometry\iPrimitiveShape.cs" />
+    <Compile Include="subGeometry\classLine.cs" />
+    <Compile Include="subGeometry\classLineLoop.cs" />
+    <Compile Include="subGeometry\classLineStrip.cs" />
+    <Compile Include="subGeometry\classPoint.cs" />
+    <Compile Include="subGeometry\classPointSet.cs" />
+    <Compile Include="subGeometry\classPrimitiveShape.cs" />
+    <Compile Include="subGeometry\classPolygon.cs" />
+    <Compile Include="subGeometry\classQuadrilateral.cs" />
+    <Compile Include="subGeometry\classTriangle.cs" />
+    <Compile Include="subGeometry\subComplexShapes\iRectangle.cs" />
+    <Compile Include="subGeometry\subComplexShapes\classHollowRectangle.cs" />
+    <Compile Include="subGeometry\subComplexShapes\classSolidRectangle.cs" />
+    <Compile Include="subGeometry\classGeometry.cs" />
+    <Compile Include="subGeometry\subComplexShapes\classHollowCircle.cs" />
+    <Compile Include="subGeometry\subComplexShapes\iCircle.cs" />
+    <Compile Include="subGeometry\subComplexShapes\classCircle.cs" />
+    <Compile Include="subGeometry\subComplexShapes\classSolidCircle.cs" />
+    <Compile Include="iWithin.cs" />
+    <Compile Include="subGeometry\subComplexShapes\structBoundingBox.cs" />
+    <Compile Include="subAlgebra\classLinearEquasion.cs" />
+    <Compile Include="subGeometry\enumShapeType.cs" />
+    <Compile Include="subImages\classGLImage.cs" />
+    <Compile Include="iBounded.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <Folder Include="subShapes\" />
-    <Folder Include="subShapes\subComplexShapes\" />
+    <Folder Include="subGeometry\" />
+    <Folder Include="subGeometry\subComplexShapes\" />
+    <Folder Include="subImages\" />
+    <Folder Include="subAlgebra\" />
   </ItemGroup>
 </Project>

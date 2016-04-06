@@ -1,22 +1,23 @@
 ﻿<Properties StartupItem="Graphics\Graphics.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Graphics\subShapes\subComplexShapes\classSolidRectangle.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Graphics\subGeometry\classPrimitiveShape.cs">
     <Files>
-      <File FileName="Graphics\MyClass.cs" Line="220" Column="9" />
-      <File FileName="Graphics\subShapes\classLine.cs" Line="17" Column="1" />
-      <File FileName="Graphics\subShapes\classLineLoop.cs" Line="25" Column="1" />
-      <File FileName="Graphics\subShapes\classLineStrip.cs" Line="25" Column="1" />
-      <File FileName="Graphics\subShapes\classPoint.cs" Line="16" Column="1" />
-      <File FileName="Graphics\subShapes\classPointSet.cs" Line="41" Column="1" />
-      <File FileName="Graphics\subShapes\classPolygon.cs" Line="27" Column="1" />
-      <File FileName="Graphics\subShapes\classPrimitiveShape.cs" Line="8" Column="68" />
-      <File FileName="Graphics\subShapes\classQuadrilateral.cs" Line="68" Column="1" />
-      <File FileName="Graphics\classRenderingContext2D.cs" Line="236" Column="1" />
-      <File FileName="Graphics\iDrawable.cs" Line="5" Column="41" />
-      <File FileName="Graphics\subShapes\iPrimitiveShape.cs" Line="5" Column="34" />
-      <File FileName="Graphics\subShapes\subComplexShapes\iRectangle.cs" Line="1" Column="1" />
-      <File FileName="Graphics\subShapes\subComplexShapes\classHollowRectangle.cs" Line="6" Column="71" />
-      <File FileName="Graphics\subShapes\subComplexShapes\classSolidRectangle.cs" Line="6" Column="71" />
+      <File FileName="Graphics\subImages\classGLImage.cs" Line="85" Column="1" />
+      <File FileName="Graphics\subGeometry\classPrimitiveShape.cs" Line="223" Column="21" />
+      <File FileName="Graphics\subGeometry\iPrimitiveShape.cs" Line="4" Column="14" />
+      <File FileName="Graphics\subGeometry\classLine.cs" Line="22" Column="3" />
+      <File FileName="Graphics\subGeometry\classLineLoop.cs" Line="30" Column="9" />
+      <File FileName="Graphics\subGeometry\classLineStrip.cs" Line="30" Column="9" />
+      <File FileName="Graphics\subGeometry\classPoint.cs" Line="26" Column="9" />
+      <File FileName="Graphics\subGeometry\classPointSet.cs" Line="46" Column="9" />
+      <File FileName="Graphics\subGeometry\classPolygon.cs" Line="32" Column="9" />
+      <File FileName="Graphics\subGeometry\classQuadrilateral.cs" Line="25" Column="9" />
+      <File FileName="Graphics\subGeometry\classTriangle.cs" Line="22" Column="9" />
+      <File FileName="Graphics\subGeometry\subComplexShapes\classHollowRectangle.cs" Line="30" Column="27" />
+      <File FileName="Graphics\subGeometry\subComplexShapes\classHollowCircle.cs" Line="60" Column="46" />
+      <File FileName="Graphics\subGeometry\subComplexShapes\classSolidCircle.cs" Line="60" Column="46" />
+      <File FileName="Graphics\subGeometry\subComplexShapes\classSolidRectangle.cs" Line="90" Column="37" />
+      <File FileName="Graphics\subGeometry\subComplexShapes\classCircle.cs" Line="60" Column="46" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
