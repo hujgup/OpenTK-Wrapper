@@ -1,23 +1,32 @@
 ﻿<Properties StartupItem="Graphics\Graphics.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Graphics\subGeometry\classPrimitiveShape.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Graphics\subText\classGLText.cs">
     <Files>
-      <File FileName="Graphics\subImages\classGLImage.cs" Line="85" Column="1" />
-      <File FileName="Graphics\subGeometry\classPrimitiveShape.cs" Line="223" Column="21" />
-      <File FileName="Graphics\subGeometry\iPrimitiveShape.cs" Line="4" Column="14" />
-      <File FileName="Graphics\subGeometry\classLine.cs" Line="22" Column="3" />
-      <File FileName="Graphics\subGeometry\classLineLoop.cs" Line="30" Column="9" />
-      <File FileName="Graphics\subGeometry\classLineStrip.cs" Line="30" Column="9" />
-      <File FileName="Graphics\subGeometry\classPoint.cs" Line="26" Column="9" />
-      <File FileName="Graphics\subGeometry\classPointSet.cs" Line="46" Column="9" />
-      <File FileName="Graphics\subGeometry\classPolygon.cs" Line="32" Column="9" />
-      <File FileName="Graphics\subGeometry\classQuadrilateral.cs" Line="25" Column="9" />
-      <File FileName="Graphics\subGeometry\classTriangle.cs" Line="22" Column="9" />
-      <File FileName="Graphics\subGeometry\subComplexShapes\classHollowRectangle.cs" Line="30" Column="27" />
-      <File FileName="Graphics\subGeometry\subComplexShapes\classHollowCircle.cs" Line="60" Column="46" />
-      <File FileName="Graphics\subGeometry\subComplexShapes\classSolidCircle.cs" Line="60" Column="46" />
-      <File FileName="Graphics\subGeometry\subComplexShapes\classSolidRectangle.cs" Line="90" Column="37" />
-      <File FileName="Graphics\subGeometry\subComplexShapes\classCircle.cs" Line="60" Column="46" />
+      <File FileName="Graphics\subGeometry\classPrimitiveShape.cs" Line="169" Column="1" />
+      <File FileName="Graphics\subGeometry\iPrimitiveShape.cs" Line="9" Column="1" />
+      <File FileName="Graphics\subGeometry\classLine.cs" Line="1" Column="1" />
+      <File FileName="Graphics\subGeometry\classLineLoop.cs" Line="1" Column="1" />
+      <File FileName="Graphics\subGeometry\classLineStrip.cs" Line="1" Column="1" />
+      <File FileName="Graphics\subGeometry\classPoint.cs" Line="1" Column="1" />
+      <File FileName="Graphics\subGeometry\classPointSet.cs" Line="1" Column="1" />
+      <File FileName="Graphics\subGeometry\classPolygon.cs" Line="1" Column="1" />
+      <File FileName="Graphics\subGeometry\classQuadrilateral.cs" Line="1" Column="1" />
+      <File FileName="Graphics\subGeometry\classTriangle.cs" Line="1" Column="1" />
+      <File FileName="Graphics\subGeometry\subComplexShapes\classHollowRectangle.cs" Line="14" Column="29" />
+      <File FileName="Graphics\subGeometry\subComplexShapes\classHollowCircle.cs" Line="48" Column="24" />
+      <File FileName="Graphics\subGeometry\subComplexShapes\classSolidCircle.cs" Line="48" Column="24" />
+      <File FileName="Graphics\subGeometry\subComplexShapes\classSolidRectangle.cs" Line="14" Column="29" />
+      <File FileName="Graphics\subGeometry\subComplexShapes\classCircle.cs" Line="11" Column="46" />
+      <File FileName="Graphics\classRenderingContext2D.cs" Line="22" Column="35" />
+      <File FileName="Graphics\subTests\nunitRenderingContext2D.cs" Line="191" Column="11" />
+      <File FileName="Graphics\iDrawable.cs" Line="5" Column="1" />
+      <File FileName="Graphics\classGLImage.cs" Line="55" Column="101" />
+      <File FileName="Graphics\subGeometry\iColored.cs" Line="13" Column="1" />
+      <File FileName="Graphics\subGeometry\subComplexShapes\structBoundingBox.cs" Line="15" Column="3" />
+      <File FileName="Graphics\subGeometry\subComplexShapes\iRectangle.cs" Line="18" Column="3" />
+      <File FileName="Graphics\subText\classGLText.cs" Line="105" Column="12" />
+      <File FileName="Graphics\subText\classScreenRegion.cs" Line="8" Column="1" />
+      <File FileName="Graphics\subText\iAttributeChangeListener.cs" Line="5" Column="38" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

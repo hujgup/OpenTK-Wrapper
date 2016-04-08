@@ -34,7 +34,7 @@ namespace Graphics {
 			get {
 				Vector2d position = new Vector2d(Center.X - Radius,Center.Y - Radius);
 				Vector2d extent = new Vector2d(Center.X + Radius,Center.Y + Radius);
-				return new BoundingBox(position,extent,this);
+				return new BoundingBox(position,extent);
 			}
 		}
 		public abstract Color4 Color {

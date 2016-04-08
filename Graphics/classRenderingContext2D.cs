@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Threading;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using OpenTK;
@@ -8,34 +9,51 @@ using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 
 namespace Graphics {
-	public class RenderingContext2D : IDisposable {
+	public class RenderingContext2D : IRectangle, IDisposable {
 		private static readonly GraphicsMode _DefaultMode = new GraphicsMode(32,24,0,4);
 		private GameWindow _window;
 		private List<MouseButton> _mouseButtons;
 		public RenderingContext2D(double logicTickRate,double renderTickRate,int windowWidth,int windowHeight,GraphicsMode mode,string title,bool fullscreen) {
-			_window = new GameWindow(windowWidth,windowHeight,mode,title,fullscreen ? GameWindowFlags.Fullscreen : GameWindowFlags.Default);
+			_window = new GameWindow(1,1,mode,title,fullscreen ? GameWindowFlags.Fullscreen : GameWindowFlags.Default);
+			_window.ClientSize = new Size(windowWidth,windowHeight);
+			_window.Location = new System.Drawing.Point(128,128);
 			_mouseButtons = new List<MouseButton>();
 			BackgroundColor = Color4.White;
 			Keyboard = new KeyboardState();
 			MousePosition = new Vector2d();
+			IsWindowOpen = false;
+			DesiredUpdateRate = logicTickRate;
+			DesiredFrameRate = renderTickRate;
 			_window.Load += (object sender,EventArgs e) => {
 				_window.VSync = VSyncMode.On;
-				OnWindowLoad(e);
+				IsWindowOpen = true;
+				OnWindowOpen(e);
+				OnUpdateRegions();
+			};
+			_window.Closed += (object sender,EventArgs e) => {
+				IsWindowOpen = false;
+				OnWindowClose(e);
 			};
 			_window.Resize += (object sender,EventArgs e) => {
+				Focus();
 				GL.Viewport(0,0,_window.Width,_window.Height);
+				OnUpdateRegions();
 			};
 			_window.UpdateFrame += (object sender,FrameEventArgs e) => {
-				OnLogicTick(e);
+				if (IsWindowOpen && !_window.IsExiting) {
+					OnLogicTick(e);
+				}
 			};
 			_window.RenderFrame += (object sender,FrameEventArgs e) => {
-				GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
-				GL.ClearColor(BackgroundColor);
-				GL.MatrixMode(MatrixMode.Projection);
-				GL.LoadIdentity();
-				GL.Ortho(0,_window.Width,_window.Height,0,0,1);			
-				OnRenderTick(e);
-				_window.SwapBuffers();
+				if (IsWindowOpen && !_window.IsExiting) {
+					GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
+					GL.ClearColor(BackgroundColor);
+					GL.MatrixMode(MatrixMode.Projection);
+					GL.LoadIdentity();
+					GL.Ortho(0,_window.Width,_window.Height,0,0,1);			
+					OnRenderTick(e);
+					_window.SwapBuffers();
+				}
 			};
 			_window.IconChanged += (object sender,EventArgs e) => {
 				OnIconChange(e);
@@ -66,7 +84,6 @@ namespace Graphics {
 				MousePosition = new Vector2d(e.X,e.Y);
 				MousePositionChange = new Vector2d(e.XDelta,e.YDelta);
 			};
-			_window.Run(logicTickRate,renderTickRate);
 		}
 		public RenderingContext2D(double logicTickRate,double renderTickRate,int windowWidth,int windowHeight,GraphicsMode mode,string title) : this(logicTickRate,renderTickRate,windowWidth,windowHeight,mode,title,false) {
 		}
@@ -76,11 +93,13 @@ namespace Graphics {
 		}
 		public RenderingContext2D(double logicTickRate,double renderTickRate,int windowWidth,int windowHeight) : this(logicTickRate,renderTickRate,windowWidth,windowHeight,_DefaultMode) {
 		}
-		private RenderingContext2D(double logicTickRate,double renderTickRate,GameWindow window) {
-		}
 		public Color4 BackgroundColor {
 			get;
 			set;
+		}
+		public bool IsWindowOpen {
+			get;
+			private set;
 		}
 		public KeyboardState Keyboard {
 			get;
@@ -129,20 +148,30 @@ namespace Graphics {
 				_window.WindowBorder = value;
 			}
 		}
-		public double UpdateRate {
+		public double DesiredUpdateRate {
 			get {
-				return _window.UpdateFrequency;
+				return _window.TargetUpdateFrequency;
 			}
 			set {
 				_window.TargetUpdateFrequency = value;
 			}
 		}
-		public double FrameRate {
+		public double ActualUpdateRate {
 			get {
-				return _window.RenderFrequency;
+				return _window.UpdateFrequency;
+			}
+		}
+		public double DesiredFrameRate {
+			get {
+				return _window.TargetRenderFrequency;
 			}
 			set {
 				_window.TargetRenderFrequency = value;
+			}
+		}
+		public double ActualFrameRate {
+			get {
+				return _window.RenderFrequency;
 			}
 		}
 		public WindowState WindowState {
@@ -153,22 +182,28 @@ namespace Graphics {
 				_window.WindowState = value;
 			}
 		}
-		public Vector2d WindowPosition {
+		public Vector2d Position {
 			get {
-				return new Vector2d(_window.X,_window.Y);
+				return new Vector2d(_window.Location.X,_window.Location.Y);
 			}
 			set {
-				_window.X = (int)Math.Floor(value.X);
-				_window.Y = (int)Math.Floor(value.Y);
+				_window.Location = new System.Drawing.Point((int)value.X,(int)value.Y);
 			}
 		}
-		public Vector2d WindowSize {
+		public Vector2d Size {
 			get {
-				return new Vector2d(_window.Width,_window.Height);
+				return new Vector2d(_window.ClientSize.Width,_window.ClientSize.Height);
 			}
 			set {
-				_window.Width = (int)Math.Floor(value.X);
-				_window.Height = (int)Math.Floor(value.Y);
+				_window.ClientSize = new System.Drawing.Size((int)value.X,(int)value.Y);
+			}
+		}
+		public Vector2d Extent {
+			get {
+				return Vector2d.Add(Position,Size);
+			}
+			set {
+				Size = Vector2d.Subtract(value,Position);
 			}
 		}
 		public MouseCursor Cursor {
@@ -195,9 +230,20 @@ namespace Graphics {
 				_window.Icon = value;
 			}
 		}
-		private void OnWindowLoad(EventArgs e) {
-			if (WindowLoad != null) {
-				WindowLoad(this,e);
+
+		private void OnUpdateRegions() {
+			if (UpdateRegions != null) {
+				UpdateRegions(this,EventArgs.Empty);
+			}
+		}
+		private void OnWindowOpen(EventArgs e) {
+			if (WindowOpen != null) {
+				WindowOpen(this,e);
+			}
+		}
+		private void OnWindowClose(EventArgs e) {
+			if (WindowClose != null) {
+				WindowClose(this,e);
 			}
 		}
 		private void OnIconChange(EventArgs e) {
@@ -225,7 +271,9 @@ namespace Graphics {
 				RenderTick(this,e);
 			}
 		}
-		public event EventHandler WindowLoad;
+		internal event EventHandler UpdateRegions;
+		public event EventHandler WindowOpen;
+		public event EventHandler WindowClose;
 		public event EventHandler WindowIconChange;
 		public event EventHandler<KeyPressEventArgs> KeyPress;
 		public event EventHandler<MouseWheelEventArgs> MouseWheel;
@@ -235,11 +283,21 @@ namespace Graphics {
 		public void Draw(IDrawable obj) {
 			obj.Draw(this);
 		}
-		public void Focus() {
-			_window.MakeCurrent();
+		public bool Focus() {
+			if (IsWindowOpen) {
+				_window.MakeCurrent();
+			}
+			return IsWindowOpen;
+		}
+		public void Open() {
+			if (!IsWindowOpen) {
+				_window.Run(DesiredUpdateRate,DesiredFrameRate);
+			}
 		}
 		public void Close() {
-			_window.Close();
+			if (IsWindowOpen) {
+				_window.Exit();
+			}
 		}
 		public void Dispose() {
 			Close();

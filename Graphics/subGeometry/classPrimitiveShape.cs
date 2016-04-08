@@ -71,7 +71,7 @@ namespace Graphics {
 				position.Y -= LineWidth;
 				extent.X += LineWidth;
 				extent.Y += LineWidth;
-				return new BoundingBox(position,extent,this);
+				return new BoundingBox(position,extent);
 			}
 		}
 		public Color4 Color {
@@ -162,14 +162,15 @@ namespace Graphics {
 			return sides;
 		}
 		public void Draw(RenderingContext2D context) {
-			context.Focus();
-			GL.LineWidth(LineWidth);
-			GL.Begin(PrimType);
-			GL.Color4(Color);
-			foreach (Vector2d point in _points) {
-				GL.Vertex2(point);
+			if (context.Focus()) {
+				GL.LineWidth(LineWidth);
+				GL.Begin(PrimType);
+				GL.Color4(Color);
+				foreach (Vector2d point in _points) {
+					GL.Vertex2(point);
+				}
+				GL.End();
 			}
-			GL.End();
 		}
 		public object Clone() {
 			PrimitiveShape res = (PrimitiveShape)MemberwiseClone();

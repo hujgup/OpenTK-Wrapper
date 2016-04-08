@@ -33,9 +33,11 @@
     <Reference Include="OpenTK">
       <HintPath>OpenTK.dll</HintPath>
     </Reference>
+    <Reference Include="nunit.framework">
+      <HintPath>..\packages\NUnit.3.2.0\lib\net45\nunit.framework.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MyClass.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="classRenderingContext2D.cs" />
     <Compile Include="iDrawable.cs" />
@@ -61,8 +63,13 @@
     <Compile Include="subGeometry\subComplexShapes\structBoundingBox.cs" />
     <Compile Include="subAlgebra\classLinearEquasion.cs" />
     <Compile Include="subGeometry\enumShapeType.cs" />
-    <Compile Include="subImages\classGLImage.cs" />
     <Compile Include="iBounded.cs" />
+    <Compile Include="subTests\nunitRenderingContext2D.cs" />
+    <Compile Include="classGLImage.cs" />
+    <Compile Include="subGeometry\iColored.cs" />
+    <Compile Include="subText\classGLText.cs" />
+    <Compile Include="subText\classScreenRegion.cs" />
+    <Compile Include="subText\iAttributeChangeListener.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -70,5 +77,10 @@
     <Folder Include="subGeometry\subComplexShapes\" />
     <Folder Include="subImages\" />
     <Folder Include="subAlgebra\" />
+    <Folder Include="subTests\" />
+    <Folder Include="subText\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
 </Project>

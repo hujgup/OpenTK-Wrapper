@@ -5,7 +5,7 @@ using OpenTK;
 using OpenTK.Graphics;
 
 namespace Graphics {
-	public class SolidRectangle : IRectangle, IPrimitiveShape, IDrawable {
+	public class SolidRectangle : IRectangle, IPrimitiveShape, IDrawable, IEquatable<IRectangle> {
 		private Quadrilateral _quad;
 		public SolidRectangle(Vector2d position,Vector2d size) {
 			_quad = new Quadrilateral();
@@ -37,7 +37,7 @@ namespace Graphics {
 		}
 		public BoundingBox Bounds {
 			get {
-				return new BoundingBox(Position,Extent,this);
+				return new BoundingBox(Position,Extent);
 			}
 		}
 		public Color4 Color {
@@ -101,6 +101,23 @@ namespace Graphics {
 		}
 		public bool ContentCollides(BoundingBox box) {
 			return _quad.ContentCollides(box);
+		}
+		public bool Equals(IRectangle other) {
+			return Position == other.Position && Size == other.Size;
+		}
+		public override bool Equals(object other) {
+			return ((IRectangle)this).GetType().IsInstanceOfType(other) ? Equals((IRectangle)other) : false;
+		}
+		public override int GetHashCode() {
+			unchecked {
+				return Position.GetHashCode() + Size.GetHashCode();
+			}
+		}
+		public static bool operator ==(SolidRectangle a,SolidRectangle b) {
+			return a.Equals(b);
+		}
+		public static bool operator !=(SolidRectangle a,SolidRectangle b) {
+			return !(a == b);
 		}
 	}
 }

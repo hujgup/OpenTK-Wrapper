@@ -5,11 +5,7 @@ using OpenTK;
 using OpenTK.Graphics;
 
 namespace Graphics {
-	public interface IPrimitiveShape : IWithin, IBounded {
-		Color4 Color {
-			get;
-			set;
-		}
+	public interface IPrimitiveShape : IWithin, IBounded, IColored {
 		float LineWidth {
 			get;
 			set;

@@ -2,11 +2,12 @@
 using System.IO;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Collections.Generic;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 
 namespace Graphics {
-	public abstract class GLImage : IRectangle, IDrawable, IWithin, IBounded, IDisposable, ICloneable {
+	public class GLImage : IRectangle, IDrawable, IWithin, IBounded, IEquatable<IRectangle>, IDisposable, ICloneable {
 		public const int DefaultAlphaThreshold = 0;
 		private int _imageID;
 		public Bitmap _bmp;
@@ -47,13 +48,14 @@ namespace Graphics {
 			}
 		}
 		public void Draw(RenderingContext2D context) {
-			context.Focus();
-			GL.BindTexture(TextureTarget.Texture2D,_imageID);
-			GL.TexParameter(TextureTarget.Texture2D,TextureParameterName.TextureMinFilter,(int)TextureMinFilter.Linear);
-			GL.TexParameter(TextureTarget.Texture2D,TextureParameterName.TextureMagFilter,(int)TextureMagFilter.Linear);
-			BitmapData data = _bmp.LockBits(new Rectangle(0,0,_bmp.Width,_bmp.Height),ImageLockMode.ReadOnly,System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-			GL.TexImage2D(TextureTarget.Texture2D,0,PixelInternalFormat.Rgba,data.Width,data.Height,0,OpenTK.Graphics.OpenGL.PixelFormat.Bgra,PixelType.UnsignedByte,data.Scan0);
-			_bmp.UnlockBits(data);
+			if (context.Focus()) {
+				GL.BindTexture(TextureTarget.Texture2D,_imageID);
+				GL.TexParameter(TextureTarget.Texture2D,TextureParameterName.TextureMinFilter,(int)TextureMinFilter.Linear);
+				GL.TexParameter(TextureTarget.Texture2D,TextureParameterName.TextureMagFilter,(int)TextureMagFilter.Linear);
+				BitmapData data = _bmp.LockBits(new Rectangle(0,0,_bmp.Width,_bmp.Height),ImageLockMode.ReadOnly,System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+				GL.TexImage2D(TextureTarget.Texture2D,0,PixelInternalFormat.Rgba,data.Width,data.Height,0,OpenTK.Graphics.OpenGL.PixelFormat.Bgra,PixelType.UnsignedByte,data.Scan0);
+				_bmp.UnlockBits(data);
+			}
 		}
 		public void Dispose() {
 			GL.DeleteTexture(_imageID);
@@ -110,7 +112,20 @@ namespace Graphics {
 		public bool ContentCollides(GLImage image,byte alphaThreshold) {
 			bool res = BoundsCollide(image.Bounds);
 			if (res) {
-				// get intersection area
+				Vector2d point;
+				int x;
+				for (int y = 0; y < Size.Y; y++) {
+					for (x = 0; x < Size.X; x++) {
+						if (PixelIsVisible(x,y,alphaThreshold)) {
+							point = Vector2d.Add(Position,new Vector2d((double)x,(double)y));
+							res = image.PointWithinBounds(point) && image.PixelIsVisible(x,y,alphaThreshold,true);
+							if (res) {
+								x = (int)Size.X;
+								y = (int)Size.Y;
+							}
+						}
+					}
+				}
 			}
 			return res;
 		}
@@ -119,6 +134,9 @@ namespace Graphics {
 		}
 		public bool ContentCollides(BoundingBox box) {
 			return Bounds.ContentCollides(box);
+		}
+		public bool Equals(IRectangle other) {
+			return Position == other.Position && Size == other.Size;
 		}
 	}
 }

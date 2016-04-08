@@ -4,16 +4,9 @@ using OpenTK;
 
 namespace Graphics {
 	public struct BoundingBox : IRectangle, IWithin, IEquatable<IRectangle> {
-		public BoundingBox(Vector2d position,Vector2d extent,IPrimitiveShape encloses) : this() {
+		public BoundingBox(Vector2d position,Vector2d extent) : this() {
 			Position = position;
 			Extent = extent;
-			EnclosedShape = encloses;
-		}
-		public BoundingBox(Vector2d position,Vector2d extent) : this(position,extent,null) {
-		}
-		public IPrimitiveShape EnclosedShape {
-			get;
-			private set;
 		}
 		public Vector2d Position {
 			get;
