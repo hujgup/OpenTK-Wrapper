@@ -4,11 +4,11 @@ using System.Collections.ObjectModel;
 using OpenTK;
 using OpenTK.Graphics;
 
-namespace Graphics {
-	public abstract class Circle : ICircle, IPrimitiveShape, IDrawable {
+namespace Graphics.GL2D {
+	public abstract class Circle2D : ICircle2D, IPrimitiveShape2D, IDrawable {
 		private Vector2d _center;
 		private double _radius;
-		public Circle(Vector2d center,double radius) {
+		public Circle2D(Vector2d center,double radius) {
 			_center = center;
 			_radius = radius;
 		}
@@ -52,15 +52,15 @@ namespace Graphics {
 			get;
 		}
 		protected abstract void Update();
-		public abstract List<Line> GetSides();
-		public abstract void Draw(RenderingContext2D context);
+		public abstract List<Line2D> GetSides();
+		public abstract void Draw(RenderingContext context);
 		public abstract bool PointWithinBounds(Vector2d point);
 		public abstract bool PointWithinContent(Vector2d point);
 		public abstract bool BoundsCollide(BoundingBox box);
 		public abstract bool BoundsCollide(IBounded shape);
-		public abstract bool ContentCollides(IPrimitiveShape shape);
-		public abstract bool ContentCollides(GLImage image,byte alphaThreshold);
-		public abstract bool ContentCollides(GLImage image);
+		public abstract bool ContentCollides(IPrimitiveShape2D shape);
+		public abstract bool ContentCollides(Image2D image,byte alphaThreshold);
+		public abstract bool ContentCollides(Image2D image);
 		public abstract bool ContentCollides(BoundingBox box);
 	}
 }

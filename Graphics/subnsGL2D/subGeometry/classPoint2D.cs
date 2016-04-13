@@ -3,15 +3,15 @@ using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 
-namespace Graphics {
-	public class Point : PrimitiveShape {
-		public Point(Color4 color,float lineWidth,Vector2d point) : base(color,lineWidth,point) {
+namespace Graphics.GL2D {
+	public class Point2D : PrimitiveShape2D {
+		public Point2D(Color4 color,float lineWidth,Vector2d point) : base(color,lineWidth,point) {
 		}
-		public Point(Color4 color,Vector2d point) : base(color,point) {
+		public Point2D(Color4 color,Vector2d point) : base(color,point) {
 		}
-		public Point(float lineWidth,Vector2d point) : base(lineWidth,point) {
+		public Point2D(float lineWidth,Vector2d point) : base(lineWidth,point) {
 		}
-		public Point(Vector2d point) : base(point) {
+		public Point2D(Vector2d point) : base(point) {
 		}
 		public static Vector2d[] Resolve(Vector2d point) {
 			return new Vector2d[1] {

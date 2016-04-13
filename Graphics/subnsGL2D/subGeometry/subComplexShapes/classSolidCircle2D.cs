@@ -4,11 +4,11 @@ using System.Collections.ObjectModel;
 using OpenTK;
 using OpenTK.Graphics;
 
-namespace Graphics {
-	public class SolidCircle : Circle {
-		private Polygon _poly;
-		public SolidCircle(Vector2d center,double radius) : base(center,radius) {
-			_poly = new Polygon();
+namespace Graphics.GL2D {
+	public class SolidCircle2D : Circle2D {
+		private Polygon2D _poly;
+		public SolidCircle2D(Vector2d center,double radius) : base(center,radius) {
+			_poly = new Polygon2D();
 			Update();
 		}
 		public override Color4 Color {
@@ -42,10 +42,10 @@ namespace Graphics {
 			List<Vector2d> circumference = Geometry.GetPointsOnCircle(Center,Radius);
 			_poly.Vertices.AddRange(circumference);
 		}
-		public override List<Line> GetSides() {
+		public override List<Line2D> GetSides() {
 			return _poly.GetSides();
 		}
-		public override void Draw(RenderingContext2D context) {
+		public override void Draw(RenderingContext context) {
 			_poly.Draw(context);
 		}
 		public override bool PointWithinBounds(Vector2d point) {
@@ -60,13 +60,13 @@ namespace Graphics {
 		public override bool BoundsCollide(IBounded shape) {
 			return _poly.BoundsCollide(shape);
 		}
-		public override bool ContentCollides(IPrimitiveShape shape) {
+		public override bool ContentCollides(IPrimitiveShape2D shape) {
 			return _poly.ContentCollides(shape);
 		}
-		public override bool ContentCollides(GLImage image,byte alphaThreshold) {
+		public override bool ContentCollides(Image2D image,byte alphaThreshold) {
 			return image.ContentCollides(_poly,alphaThreshold);
 		}
-		public override bool ContentCollides(GLImage image) {
+		public override bool ContentCollides(Image2D image) {
 			return image.ContentCollides(_poly);
 		}
 		public override bool ContentCollides(BoundingBox box) {

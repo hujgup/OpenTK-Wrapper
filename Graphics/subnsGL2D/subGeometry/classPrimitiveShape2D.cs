@@ -4,30 +4,31 @@ using System.Collections.ObjectModel;
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
+using Graphics.Algebra;
 
-namespace Graphics {
-	public abstract class PrimitiveShape : IPrimitiveShape, IDrawable, ICloneable {
+namespace Graphics.GL2D {
+	public abstract class PrimitiveShape2D : IPrimitiveShape2D, IDrawable, ICloneable {
 		public const float DefaultLineWidth = 1f;
 		public static readonly Color4 DefaultColor = Color4.Black;
 		protected List<Vector2d> _points;
-		public PrimitiveShape(Color4 color,float lineWidth,IEnumerable<Vector2d> points) {
+		public PrimitiveShape2D(Color4 color,float lineWidth,IEnumerable<Vector2d> points) {
 			Color = color;
 			LineWidth = lineWidth;
 			_points = new List<Vector2d>(points);
 		}
-		public PrimitiveShape(Color4 color,float lineWidth,params Vector2d[] points) : this(color,lineWidth,(IEnumerable<Vector2d>)points) {
+		public PrimitiveShape2D(Color4 color,float lineWidth,params Vector2d[] points) : this(color,lineWidth,(IEnumerable<Vector2d>)points) {
 		}
-		public PrimitiveShape(Color4 color,IEnumerable<Vector2d> points) : this(color,DefaultLineWidth,points) {
+		public PrimitiveShape2D(Color4 color,IEnumerable<Vector2d> points) : this(color,DefaultLineWidth,points) {
 		}
-		public PrimitiveShape(Color4 color,params Vector2d[] points) : this(color,DefaultLineWidth,points) {
+		public PrimitiveShape2D(Color4 color,params Vector2d[] points) : this(color,DefaultLineWidth,points) {
 		}
-		public PrimitiveShape(float lineWidth,IEnumerable<Vector2d> points) : this(DefaultColor,lineWidth,points) {
+		public PrimitiveShape2D(float lineWidth,IEnumerable<Vector2d> points) : this(DefaultColor,lineWidth,points) {
 		}
-		public PrimitiveShape(float lineWidth,params Vector2d[] points) : this(DefaultColor,lineWidth,points) {
+		public PrimitiveShape2D(float lineWidth,params Vector2d[] points) : this(DefaultColor,lineWidth,points) {
 		}
-		public PrimitiveShape(IEnumerable<Vector2d> points) : this(DefaultColor,points) {
+		public PrimitiveShape2D(IEnumerable<Vector2d> points) : this(DefaultColor,points) {
 		}
-		public PrimitiveShape(params Vector2d[] points) : this(DefaultColor,points) {
+		public PrimitiveShape2D(params Vector2d[] points) : this(DefaultColor,points) {
 		}
 		protected abstract PrimitiveType PrimType {
 			get;
@@ -82,12 +83,12 @@ namespace Graphics {
 			get;
 			set;
 		}
-		protected virtual bool AdvancedContentCollides(IPrimitiveShape shape) {
+		protected virtual bool AdvancedContentCollides(IPrimitiveShape2D shape) {
 			bool res = false;
-			List<Line> shapeLines = shape.GetSides();
+			List<Line2D> shapeLines = shape.GetSides();
 			if (ShapeType <= ShapeType.PointSet) {
 				foreach (Vector2d point in _points) {
-					foreach (Line shapeLine in shapeLines) {
+					foreach (Line2D shapeLine in shapeLines) {
 						res = point.Equals(shapeLine.Origin);
 						if (res) {
 							break;
@@ -98,9 +99,9 @@ namespace Graphics {
 					}
 				}
 			} else { // LineSet, Hollow, Solid
-				List<Line> currentLines = GetSides();
-				foreach (Line currentLine in currentLines) {
-					foreach (Line shapeLine in shapeLines) {
+				List<Line2D> currentLines = GetSides();
+				foreach (Line2D currentLine in currentLines) {
+					foreach (Line2D shapeLine in shapeLines) {
 						res = currentLine.ContentCollides(shapeLine);
 						if (res) {
 							break;
@@ -123,19 +124,19 @@ namespace Graphics {
 					}
 				}
 			} else {
-				List<Line> sides = GetSides();
+				List<Line2D> sides = GetSides();
 				if (ShapeType >= ShapeType.Solid) {
 					// Raycast
 					LinearEquasion ray = new LinearEquasion(0,point.Y);
 					int intersects = 0;
-					foreach (Line side in sides) {
+					foreach (Line2D side in sides) {
 						if (!double.IsNaN(side.GetLinearEquasion().Intersect(ray).X)) {
 							intersects++;
 						}
 					}
 					res = intersects%2 == 1;
 				} else if (ShapeType >= ShapeType.LineSet) {
-					foreach (Line side in sides) {
+					foreach (Line2D side in sides) {
 						res = side.GetLinearEquasion().PointOnLine(point,LineWidth);
 						if (res) {
 							break;
@@ -145,23 +146,23 @@ namespace Graphics {
 			}
 			return res;
 		}
-		public virtual List<Line> GetSides() {
-			List<Line> sides;
+		public virtual List<Line2D> GetSides() {
+			List<Line2D> sides;
 			if (ShapeType <= ShapeType.PointSet) {
-				sides = new List<Line>(0);
+				sides = new List<Line2D>(0);
 			} else {
 				int max = _points.Count - 1;
-				sides = new List<Line>(ShapeType >= ShapeType.Hollow ? _points.Count : max);
+				sides = new List<Line2D>(ShapeType >= ShapeType.Hollow ? _points.Count : max);
 				for (int i = 0, iPlusOne = 1; i < max; i++, iPlusOne++) {
-					sides.Add(new Line(_points[i],_points[iPlusOne]));
+					sides.Add(new Line2D(_points[i],_points[iPlusOne]));
 				}
 				if (ShapeType >= ShapeType.Hollow && _points.Count > 1) {
-					sides.Add(new Line(_points[max],_points[0]));
+					sides.Add(new Line2D(_points[max],_points[0]));
 				}
 			}
 			return sides;
 		}
-		public void Draw(RenderingContext2D context) {
+		public void Draw(RenderingContext context) {
 			if (context.Focus()) {
 				GL.LineWidth(LineWidth);
 				GL.Begin(PrimType);
@@ -173,7 +174,7 @@ namespace Graphics {
 			}
 		}
 		public object Clone() {
-			PrimitiveShape res = (PrimitiveShape)MemberwiseClone();
+			PrimitiveShape2D res = (PrimitiveShape2D)MemberwiseClone();
 			res._points = new List<Vector2d>(_points);
 			return res;
 		}
@@ -193,14 +194,14 @@ namespace Graphics {
 		public bool BoundsCollide(IBounded shape) {
 			return BoundsCollide(shape.Bounds);
 		}
-		public bool ContentCollides(IPrimitiveShape shape) {
+		public bool ContentCollides(IPrimitiveShape2D shape) {
 			bool res = this == shape;
 			if (!res) {
 				res = AdvancedContentCollides(shape);
 			}
 			return res;
 		}
-		public bool ContentCollides(GLImage image,byte alphaThreshold) {
+		public bool ContentCollides(Image2D image,byte alphaThreshold) {
 			bool res = BoundsCollide(image.Bounds);
 			if (res) {
 				if (ShapeType <= ShapeType.PointSet) {
@@ -232,13 +233,13 @@ namespace Graphics {
 			}
 			return res;
 		}
-		public bool ContentCollides(GLImage image) {
-			return ContentCollides(image,GLImage.DefaultAlphaThreshold);
+		public bool ContentCollides(Image2D image) {
+			return ContentCollides(image,Image2D.DefaultAlphaThreshold);
 		}
 		public bool ContentCollides(BoundingBox box) {
 			bool res = Bounds == box;
 			if (!res) {
-				PrimitiveShape shape = (PrimitiveShape)MemberwiseClone();
+				PrimitiveShape2D shape = (PrimitiveShape2D)MemberwiseClone();
 				shape._points.Clear();
 				shape._points.Add(box.Position);
 				shape._points.Add(new Vector2d(box.Extent.X,box.Position.Y));

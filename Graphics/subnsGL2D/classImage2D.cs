@@ -4,23 +4,51 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Collections.Generic;
 using OpenTK;
+using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 
-namespace Graphics {
-	public class GLImage : IRectangle, IDrawable, IWithin, IBounded, IEquatable<IRectangle>, IDisposable, ICloneable {
-		public const int DefaultAlphaThreshold = 0;
+namespace Graphics.GL2D {
+	public class Image2D : IRectangle, IRedrawable, IDrawable, IWithin2D, IBounded, IEquatable<IRectangle>, IDisposable, ICloneable {
+		public const byte DefaultAlphaThreshold = 0;
+		private RenderingContext _context;
 		private int _imageID;
 		public Bitmap _bmp;
-		public GLImage(string path,Vector2d position,Vector2d size) : this(path,position) {
+		public Image2D(RenderingContext context,string path,Vector2d position,Vector2d size) : this(context,path,position) {
 			Size = size;
 		}
-		public GLImage(string path,Vector2d position) : this(path) {
+		public Image2D(RenderingContext context,Bitmap bmp,Vector2d position,Vector2d size) : this(context,bmp,position) {
+			Size = size;
+		}
+		public Image2D(RenderingContext context,string path,Vector2d position) : this(context,path) {
 			Position = Position;
 		}
-		public GLImage(string path) {
-			_imageID = GL.GenTexture();
+		public Image2D(RenderingContext context,Bitmap bmp,Vector2d position) : this(context,bmp) {
+			Position = Position;
+		}
+		public Image2D(RenderingContext context,string path) {
+			_context = context;
+			_context.Focus();
 			_bmp = new Bitmap(path);
 			Position = new Vector2d();
+			Create(false);
+		}
+		public Image2D(RenderingContext context,Bitmap bmp) {
+			_context = context;
+			_context.Focus();
+			_bmp = new Bitmap(bmp);
+			Position = new Vector2d();
+			Create(false);
+		}
+		public RenderingContext Context {
+			get {
+				return _context;
+			}
+			set {
+				if (_context != value) {
+					_context = value;
+					Create();
+				}
+			}
 		}
 		public Vector2d Position {
 			get;
@@ -47,8 +75,59 @@ namespace Graphics {
 				return new BoundingBox(Position,Extent);
 			}
 		}
-		public void Draw(RenderingContext2D context) {
-			if (context.Focus()) {
+		private void Create(bool destroyID) {
+			if (_context.Focus()) {
+				if (destroyID) {
+					GL.DeleteTexture(_imageID);
+				}
+				_imageID = GL.GenTexture();
+			}
+		}
+		private void Create() {
+			Create(true);
+		}
+		private Color PixelColorActual(int x,int y,bool absolute) {
+			if (absolute) {
+				x -= (int)Position.X;
+				y -= (int)Position.Y;
+			}
+			return _bmp.GetPixel(x,y);
+		}
+		private bool PixelVisibleActual(Color col,byte alphaThreshold) {
+			return col.A > alphaThreshold;
+		}
+		private byte FromFloat(float val) {
+			return (byte)Math.Floor(256*val);
+		}
+		public void Overlay(Color4 color,byte alphaThreshold) {
+			_bmp = new Bitmap((int)Size.X,(int)Size.Y);
+			Color replacement = new Color();
+			replacement.R = FromFloat(color.R);
+			replacement.G = FromFloat(color.G);
+			replacement.B = FromFloat(color.B);
+			replacement.A = FromFloat(color.A);
+			int maxX = (int)Size.X;
+			int maxY = (int)Size.Y;
+			int x;
+			Color col;
+			for (int y = 0; y < maxY; y++) {
+				for (x = 0; x < maxX; x++) {
+					col = PixelColorActual(x,y,false);
+					if (PixelVisibleActual(col,alphaThreshold)) {
+						_bmp.SetPixel(x,y,replacement);
+					}
+				}
+			}
+		}
+		public void Overlay(Color4 color) {
+			return Overlay(color,DefaultAlphaThreshold);
+		}
+		public void Draw(RenderingContext context) {
+			Context = context;
+			Draw();
+		}
+		public void Draw() {
+			if (_context.Focus()) {
 				GL.BindTexture(TextureTarget.Texture2D,_imageID);
 				GL.TexParameter(TextureTarget.Texture2D,TextureParameterName.TextureMinFilter,(int)TextureMinFilter.Linear);
 				GL.TexParameter(TextureTarget.Texture2D,TextureParameterName.TextureMagFilter,(int)TextureMagFilter.Linear);
@@ -62,27 +141,29 @@ namespace Graphics {
 			_bmp.Dispose();
 		}
 		public object Clone() {
-			GLImage res = (GLImage)MemberwiseClone();
+			Image2D res = (Image2D)MemberwiseClone();
 			res._imageID = GL.GenTexture();
 			res._bmp = (Bitmap)_bmp.Clone();
 			return res;
 		}
+		public Color4 PixelColor(int x,int y,bool absolute) {
+			Color col = PixelColorActual(x,y,absolute);
+			return new Color4(col.R,col.G,col.B,col.A);
+		}
+		public Color4 PixelColor(int x,int y) {
+			return PixelColor(x,y,false);
+		}
 		public bool PixelIsVisible(int x,int y,byte alphaThreshold,bool absolute) {
-			if (absolute) {
-				x -= (int)Position.X;
-				y -= (int)Position.Y;
-			}
-			Color col = _bmp.GetPixel(x,y);
-			return col.A > alphaThreshold;
+			return PixelVisibleActual(PixelColorActual(x,y,absolute),alphaThreshold);
 		}
 		public bool PixelIsVisible(int x,int y,byte alphaThreshold) {
 			return PixelIsVisible(x,y,alphaThreshold,false);
 		}
 		public bool PixelIsVisible(int x,int y,bool absolute) {
-			return PixelIsVisible(x,y,DefaultAlphaThreshold,false);
+			return PixelIsVisible(x,y,DefaultAlphaThreshold,absolute);
 		}
 		public bool PixelIsVisible(int x,int y) {
-			return PixelIsVisible(x,y,false);
+			return PixelIsVisible(x,y,DefaultAlphaThreshold);
 		}
 		public bool PointWithinBounds(Vector2d point) {
 			return Bounds.PointWithinBounds(point);
@@ -103,13 +184,13 @@ namespace Graphics {
 		public bool BoundsCollide(IBounded shape) {
 			return Bounds.BoundsCollide(shape.Bounds);
 		}
-		public bool ContentCollides(IPrimitiveShape shape,byte alphaThreshold) {
+		public bool ContentCollides(IPrimitiveShape2D shape,byte alphaThreshold) {
 			return shape.ContentCollides(this,alphaThreshold);
 		}
-		public bool ContentCollides(IPrimitiveShape shape) {
+		public bool ContentCollides(IPrimitiveShape2D shape) {
 			return ContentCollides(shape,DefaultAlphaThreshold);
 		}
-		public bool ContentCollides(GLImage image,byte alphaThreshold) {
+		public bool ContentCollides(Image2D image,byte alphaThreshold) {
 			bool res = BoundsCollide(image.Bounds);
 			if (res) {
 				Vector2d point;
@@ -129,7 +210,7 @@ namespace Graphics {
 			}
 			return res;
 		}
-		public bool ContentCollides(GLImage image) {
+		public bool ContentCollides(Image2D image) {
 			return ContentCollides(image,DefaultAlphaThreshold);
 		}
 		public bool ContentCollides(BoundingBox box) {

@@ -4,16 +4,16 @@ using System.Collections.ObjectModel;
 using OpenTK;
 using OpenTK.Graphics;
 
-namespace Graphics {
-	public class SolidRectangle : IRectangle, IPrimitiveShape, IDrawable, IEquatable<IRectangle> {
-		private Quadrilateral _quad;
-		public SolidRectangle(Vector2d position,Vector2d size) {
-			_quad = new Quadrilateral();
+namespace Graphics.GL2D {
+	public class HollowRectangle2D : IRectangle, IPrimitiveShape2D, IDrawable, IEquatable<IRectangle> {
+		private LineLoop2D _loop;
+		public HollowRectangle2D(Vector2d position,Vector2d size) {
+			_loop = new LineLoop2D();
 			Update(position,Vector2d.Add(position,size));
 		}
 		public Vector2d Position {
 			get {
-				return _quad.FirstPoint;
+				return _loop.Vertices[0];
 			}
 			set {
 				Update(value,Extent);
@@ -29,7 +29,7 @@ namespace Graphics {
 		}
 		public Vector2d Extent {
 			get {
-				return _quad.ThirdPoint;
+				return _loop.Vertices[2];
 			}
 			set {
 				Update(Position,value);
@@ -40,67 +40,68 @@ namespace Graphics {
 				return new BoundingBox(Position,Extent);
 			}
 		}
-		public Color4 Color {
-			get {
-				return _quad.Color;
-			}
-			set {
-				_quad.Color = value;
-			}
-		}
-		public float LineWidth {
-			get {
-				return _quad.LineWidth;
-			}
-			set {
-				_quad.LineWidth = value;
-			}
-		}
 		public ShapeType ShapeType {
 			get {
 				return ShapeType.LineSet;
 			}
 		}
+		public Color4 Color {
+			get {
+				return _loop.Color;
+			}
+			set {
+				_loop.Color = value;
+			}
+		}
+		public float LineWidth {
+			get {
+				return _loop.LineWidth;
+			}
+			set {
+				_loop.LineWidth = value;
+			}
+		}
 		public ReadOnlyCollection<Vector2d> Outline {
 			get {
-				return _quad.Outline;
+				return _loop.Outline;
 			}
 		}
 		private void Update(Vector2d position,Vector2d extent) {
-			_quad.FirstPoint = position;
-			_quad.SecondPoint = new Vector2d(extent.X,position.Y);
-			_quad.ThirdPoint = extent;
-			_quad.FourthPoint = new Vector2d(position.X,extent.Y);
+			_loop.Vertices.Clear();
+			_loop.Vertices.Add(position);
+			_loop.Vertices.Add(new Vector2d(extent.X,position.Y));
+			_loop.Vertices.Add(extent);
+			_loop.Vertices.Add(new Vector2d(position.X,extent.Y));
 		}
-		public List<Line> GetSides() {
-			return _quad.GetSides();
+		public List<Line2D> GetSides() {
+			return _loop.GetSides();
 		}
-		public void Draw(RenderingContext2D context) {
-			_quad.Draw(context);
+		public void Draw(RenderingContext context) {
+			_loop.Draw(context);
 		}
 		public bool PointWithinBounds(Vector2d point) {
-			return _quad.PointWithinBounds(point);
+			return _loop.PointWithinBounds(point);
 		}
 		public bool PointWithinContent(Vector2d point) {
-			return _quad.PointWithinContent(point);
+			return _loop.PointWithinContent(point);
 		}
 		public bool BoundsCollide(BoundingBox box) {
-			return _quad.BoundsCollide(box);
+			return _loop.BoundsCollide(box);
 		}
 		public bool BoundsCollide(IBounded shape) {
-			return _quad.BoundsCollide(shape);
+			return _loop.BoundsCollide(shape);
 		}
-		public bool ContentCollides(IPrimitiveShape shape) {
-			return _quad.ContentCollides(shape);
+		public bool ContentCollides(IPrimitiveShape2D shape) {
+			return _loop.ContentCollides(shape);
 		}
-		public bool ContentCollides(GLImage image,byte alphaThreshold) {
-			return image.ContentCollides(_quad,alphaThreshold);
+		public bool ContentCollides(Image2D image,byte alphaThreshold) {
+			return image.ContentCollides(_loop,alphaThreshold);
 		}
-		public bool ContentCollides(GLImage image) {
-			return ContentCollides(image,GLImage.DefaultAlphaThreshold);
+		public bool ContentCollides(Image2D image) {
+			return ContentCollides(image,Image2D.DefaultAlphaThreshold);
 		}
 		public bool ContentCollides(BoundingBox box) {
-			return _quad.ContentCollides(box);
+			return _loop.ContentCollides(box);
 		}
 		public bool Equals(IRectangle other) {
 			return Position == other.Position && Size == other.Size;
@@ -113,10 +114,10 @@ namespace Graphics {
 				return Position.GetHashCode() + Size.GetHashCode();
 			}
 		}
-		public static bool operator ==(SolidRectangle a,SolidRectangle b) {
+		public static bool operator ==(HollowRectangle2D a,HollowRectangle2D b) {
 			return a.Equals(b);
 		}
-		public static bool operator !=(SolidRectangle a,SolidRectangle b) {
+		public static bool operator !=(HollowRectangle2D a,HollowRectangle2D b) {
 			return !(a == b);
 		}
 	}

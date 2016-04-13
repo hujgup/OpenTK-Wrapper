@@ -4,8 +4,8 @@ using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 
-namespace Graphics {
-	public class Triangle : PrimitiveShape {
+namespace Graphics.GL2D {
+	public class Triangle : PrimitiveShape2D {
 		public Triangle(Color4 color,float lineWidth,Vector2d point1,Vector2d point2,Vector2d point3) : base(color,lineWidth,Resolve(point1,point2,point3)) {
 		}
 		public Triangle(Color4 color,Vector2d point1,Vector2d point2,Vector2d point3) : base(color,Resolve(point1,point2,point3)) {

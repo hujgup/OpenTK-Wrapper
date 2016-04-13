@@ -4,18 +4,18 @@ using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 
-namespace Graphics {
-	public class Quadrilateral : PrimitiveShape {
+namespace Graphics.GL2D {
+	public class Quadrilateral2D : PrimitiveShape2D {
 		private static readonly Vector2d _Empty = new Vector2d();
-		public Quadrilateral(Color4 color,float lineWidth,Vector2d point1,Vector2d point2,Vector2d point3,Vector2d point4) : base(color,lineWidth,Resolve(point1,point2,point3,point4)) {
+		public Quadrilateral2D(Color4 color,float lineWidth,Vector2d point1,Vector2d point2,Vector2d point3,Vector2d point4) : base(color,lineWidth,Resolve(point1,point2,point3,point4)) {
 		}
-		public Quadrilateral(Color4 color,Vector2d point1,Vector2d point2,Vector2d point3,Vector2d point4) : base(color,Resolve(point1,point2,point3,point4)) {
+		public Quadrilateral2D(Color4 color,Vector2d point1,Vector2d point2,Vector2d point3,Vector2d point4) : base(color,Resolve(point1,point2,point3,point4)) {
 		}
-		public Quadrilateral(float lineWidth,Vector2d point1,Vector2d point2,Vector2d point3,Vector2d point4) : base(lineWidth,Resolve(point1,point2,point3,point4)) {
+		public Quadrilateral2D(float lineWidth,Vector2d point1,Vector2d point2,Vector2d point3,Vector2d point4) : base(lineWidth,Resolve(point1,point2,point3,point4)) {
 		}
-		public Quadrilateral(Vector2d point1,Vector2d point2,Vector2d point3,Vector2d point4) : base(Resolve(point1,point2,point3,point4)) {
+		public Quadrilateral2D(Vector2d point1,Vector2d point2,Vector2d point3,Vector2d point4) : base(Resolve(point1,point2,point3,point4)) {
 		}
-		internal Quadrilateral() : this(_Empty,_Empty,_Empty,_Empty) {
+		internal Quadrilateral2D() : this(_Empty,_Empty,_Empty,_Empty) {
 		}
 		protected override PrimitiveType PrimType {
 			get {

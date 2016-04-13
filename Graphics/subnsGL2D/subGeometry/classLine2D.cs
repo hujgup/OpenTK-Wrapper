@@ -3,16 +3,17 @@ using System.Collections.Generic;
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
+using Graphics.Algebra;
 
-namespace Graphics {
-	public class Line : PrimitiveShape {
-		public Line(Color4 color,float lineWidth,Vector2d origin,Vector2d destination) : base(color,lineWidth,new Vector2d[2] {origin, destination}) {
+namespace Graphics.GL2D {
+	public class Line2D : PrimitiveShape2D {
+		public Line2D(Color4 color,float lineWidth,Vector2d origin,Vector2d destination) : base(color,lineWidth,new Vector2d[2] {origin, destination}) {
 		}
-		public Line(Color4 color,Vector2d origin,Vector2d destination) : base(color,Resolve(origin,destination)) {
+		public Line2D(Color4 color,Vector2d origin,Vector2d destination) : base(color,Resolve(origin,destination)) {
 		}
-		public Line(float lineWidth,Vector2d origin,Vector2d destination) : base(lineWidth,Resolve(origin,destination)) {
+		public Line2D(float lineWidth,Vector2d origin,Vector2d destination) : base(lineWidth,Resolve(origin,destination)) {
 		}
-		public Line(Vector2d origin,Vector2d destination) : base(Resolve(origin,destination)) {
+		public Line2D(Vector2d origin,Vector2d destination) : base(Resolve(origin,destination)) {
 		}
 		protected override PrimitiveType PrimType {
 			get {
@@ -46,12 +47,12 @@ namespace Graphics {
 				destination
 			};
 		}
-		protected override bool AdvancedContentCollides(IPrimitiveShape shape) {
-			List<Line> shapeLines = shape.GetSides();
+		protected override bool AdvancedContentCollides(IPrimitiveShape2D shape) {
+			List<Line2D> shapeLines = shape.GetSides();
 			LinearEquasion currentEqn = GetLinearEquasion();
 			bool res = false;
 			Vector2d intersect;
-			foreach (Line shapeLine in shapeLines) {
+			foreach (Line2D shapeLine in shapeLines) {
 				intersect = currentEqn.Intersect(shapeLine.GetLinearEquasion(),Origin,Destination);
 				if (!double.IsNaN(intersect.X)) {
 					res = true;

@@ -3,7 +3,7 @@ using OpenTK.Graphics;
 using OpenTK;
 using NUnit.Framework;
 
-namespace Graphics {
+namespace Graphics.GL2D {
 	[TestFixture()]
 	public class NUnitRenderingContext2D {
 		[Test()]

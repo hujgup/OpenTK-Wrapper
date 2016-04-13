@@ -18,6 +18,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
+    <DocumentationFile>bin\Debug\Graphics.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>full</DebugType>
@@ -39,46 +40,59 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="classRenderingContext2D.cs" />
-    <Compile Include="iDrawable.cs" />
-    <Compile Include="subGeometry\iPrimitiveShape.cs" />
-    <Compile Include="subGeometry\classLine.cs" />
-    <Compile Include="subGeometry\classLineLoop.cs" />
-    <Compile Include="subGeometry\classLineStrip.cs" />
-    <Compile Include="subGeometry\classPoint.cs" />
-    <Compile Include="subGeometry\classPointSet.cs" />
-    <Compile Include="subGeometry\classPrimitiveShape.cs" />
-    <Compile Include="subGeometry\classPolygon.cs" />
-    <Compile Include="subGeometry\classQuadrilateral.cs" />
-    <Compile Include="subGeometry\classTriangle.cs" />
     <Compile Include="subGeometry\subComplexShapes\iRectangle.cs" />
-    <Compile Include="subGeometry\subComplexShapes\classHollowRectangle.cs" />
-    <Compile Include="subGeometry\subComplexShapes\classSolidRectangle.cs" />
     <Compile Include="subGeometry\classGeometry.cs" />
-    <Compile Include="subGeometry\subComplexShapes\classHollowCircle.cs" />
     <Compile Include="subGeometry\subComplexShapes\iCircle.cs" />
-    <Compile Include="subGeometry\subComplexShapes\classCircle.cs" />
-    <Compile Include="subGeometry\subComplexShapes\classSolidCircle.cs" />
     <Compile Include="iWithin.cs" />
     <Compile Include="subGeometry\subComplexShapes\structBoundingBox.cs" />
-    <Compile Include="subAlgebra\classLinearEquasion.cs" />
     <Compile Include="subGeometry\enumShapeType.cs" />
     <Compile Include="iBounded.cs" />
     <Compile Include="subTests\nunitRenderingContext2D.cs" />
-    <Compile Include="classGLImage.cs" />
     <Compile Include="subGeometry\iColored.cs" />
-    <Compile Include="subText\classGLText.cs" />
-    <Compile Include="subText\classScreenRegion.cs" />
     <Compile Include="subText\iAttributeChangeListener.cs" />
+    <Compile Include="subText\classGLFont.cs" />
+    <Compile Include="classRenderingContext.cs" />
+    <Compile Include="iDrawable.cs" />
+    <Compile Include="subnsGL2D\iWithin2D.cs" />
+    <Compile Include="subnsGL2D\classRenderingContext2D.cs" />
+    <Compile Include="classScreenRegion.cs" />
+    <Compile Include="subText\enumTextOverflow.cs" />
+    <Compile Include="subnsGL2D\subGeometry\classLine2D.cs" />
+    <Compile Include="subnsGL2D\subGeometry\classLineLoop2D.cs" />
+    <Compile Include="subnsGL2D\subGeometry\classLineStrip2D.cs" />
+    <Compile Include="subnsGL2D\subGeometry\classPoint2D.cs" />
+    <Compile Include="subnsGL2D\subGeometry\classPointSet2D.cs" />
+    <Compile Include="subnsGL2D\subGeometry\classPolygon2D.cs" />
+    <Compile Include="subnsGL2D\subGeometry\classPrimitiveShape2D.cs" />
+    <Compile Include="subnsGL2D\subGeometry\classQuadrilateral2D.cs" />
+    <Compile Include="subnsGL2D\subGeometry\classTriangle2D.cs" />
+    <Compile Include="subnsGL2D\subGeometry\iPrimitiveShape2D.cs" />
+    <Compile Include="subnsGL2D\subGeometry\subComplexShapes\classCircle2D.cs" />
+    <Compile Include="subnsGL2D\subGeometry\subComplexShapes\classHollowCircle2D.cs" />
+    <Compile Include="subnsGL2D\subGeometry\subComplexShapes\classHollowRectangle2D.cs" />
+    <Compile Include="subnsGL2D\subGeometry\subComplexShapes\classSolidCircle2D.cs" />
+    <Compile Include="subnsGL2D\subGeometry\subComplexShapes\classSolidRectangle2D.cs" />
+    <Compile Include="subnsGL2D\subGeometry\subComplexShapes\iCircle2D.cs" />
+    <Compile Include="subnsAlgebra\classLinearEquasion.cs" />
+    <Compile Include="subnsGL2D\subText\classText2D.cs" />
+    <Compile Include="subnsGL2D\classImage2D.cs" />
+    <Compile Include="subText\iText.cs" />
+    <Compile Include="subText\classGLBitmapFont.cs" />
+    <Compile Include="subnsGL2D\subText\classBitmapText2D.cs" />
+    <Compile Include="subText\classGlyphMap.cs" />
+    <Compile Include="iRedrawable.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Folder Include="subGeometry\" />
     <Folder Include="subGeometry\subComplexShapes\" />
-    <Folder Include="subImages\" />
-    <Folder Include="subAlgebra\" />
     <Folder Include="subTests\" />
     <Folder Include="subText\" />
+    <Folder Include="subnsGL2D\" />
+    <Folder Include="subnsGL2D\subText\" />
+    <Folder Include="subnsGL2D\subGeometry\" />
+    <Folder Include="subnsGL2D\subGeometry\subComplexShapes\" />
+    <Folder Include="subnsAlgebra\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
